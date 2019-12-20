@@ -8,41 +8,41 @@ SELECT
   ,CASE
     WHEN Full_Domain_Name0 IS NULL THEN Netbios_Name0
     ELSE Netbios_Name0 + '.' + Lower(Full_Domain_Name0)
-    END AS [Имя компьютера]
+    END AS [РРјСЏ РєРѕРјРїСЊСЋС‚РµСЂР°]
   ,Operating_System_Name_and0
   ,CASE
-	WHEN Operating_System_Name_and0 like '%Server%' THEN N'Сервер'
-	ELSE N'Рабочая станция'
-  END AS [Тип устройства]
-  ,Resource_Domain_OR_Workgr0 AS [Домен]
-  ,SharedFolderName0 AS [Имя общего ресурса]
-  ,v_GS_SHARE.Description0 AS [Примечание]
-  ,v_GS_SHARE.Path0 AS [Путь]
-  ,Owner0 AS [Владелец]
+	WHEN Operating_System_Name_and0 like '%Server%' THEN N'РЎРµСЂРІРµСЂ'
+	ELSE N'Р Р°Р±РѕС‡Р°СЏ СЃС‚Р°РЅС†РёСЏ'
+  END AS [РўРёРї СѓСЃС‚СЂРѕР№СЃС‚РІР°]
+  ,Resource_Domain_OR_Workgr0 AS [Р”РѕРјРµРЅ]
+  ,SharedFolderName0 AS [РРјСЏ РѕР±С‰РµРіРѕ СЂРµСЃСѓСЂСЃР°]
+  ,v_GS_SHARE.Description0 AS [РџСЂРёРјРµС‡Р°РЅРёРµ]
+  ,v_GS_SHARE.Path0 AS [РџСѓС‚СЊ]
+  ,Owner0 AS [Р’Р»Р°РґРµР»РµС†]
   ,CASE PermissionType0
 	WHEN 'NTFSPermission' THEN  'NTFS'
 	WHEN 'SharedPermission' THEN  'Shared'
 	ELSE PermissionType0
-  END AS [Тип разрешения]
+  END AS [РўРёРї СЂР°Р·СЂРµС€РµРЅРёСЏ]
   ,CASE SecurityPrincipal0
-	WHEN N'BUILTIN\Пользователи' THEN  'BUILTIN\Users'
-	WHEN N'BUILTIN\Администраторы' THEN  'BUILTIN\Administrators'
-	WHEN N'NT AUTHORITY\СИСТЕМА' THEN  'NT AUTHORITY\SYSTEM'
-	WHEN N'Все' THEN  'Everyone'
+	WHEN N'BUILTIN\РџРѕР»СЊР·РѕРІР°С‚РµР»Рё' THEN  'BUILTIN\Users'
+	WHEN N'BUILTIN\РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂС‹' THEN  'BUILTIN\Administrators'
+	WHEN N'NT AUTHORITY\РЎРРЎРўР•РњРђ' THEN  'NT AUTHORITY\SYSTEM'
+	WHEN N'Р’СЃРµ' THEN  'Everyone'
 	ELSE SecurityPrincipal0
-  END AS [Субъект]
+  END AS [РЎСѓР±СЉРµРєС‚]
   ,CASE AccessControlType0
 	WHEN 'AccessAllowed' THEN  'Allowed'
 	WHEN 'AccessDenied' THEN  'Denied'
 	ELSE AccessControlType0
-  END AS [Доступ]
-  ,FileSystemRights0 AS [Разрешения]
+  END AS [Р”РѕСЃС‚СѓРї]
+  ,FileSystemRights0 AS [Р Р°Р·СЂРµС€РµРЅРёСЏ]
   ,AccessControlFlags0
   ,CASE
 	WHEN TimeAddedtoWMI0 LIKE '%.__ %' THEN CONVERT(datetime, TimeAddedtoWMI0, 2)
 	WHEN CHARINDEX ('/',TimeAddedtoWMI0) = 0 THEN CONVERT(datetime, TimeAddedtoWMI0, 105)
 	ELSE CONVERT(datetime, TimeAddedtoWMI0)
-	END AS [Дата проверки]
+	END AS [Р”Р°С‚Р° РїСЂРѕРІРµСЂРєРё]
 INTO #TempSHAREFOLDERPERMISSION
 FROM v_GS_CM_SHAREFOLDERPERMISSION
   LEFT OUTER JOIN v_R_System
@@ -69,11 +69,11 @@ JOIN (
 	GROUP BY
 	  sq.ResourceID
 ) LASTCHECK
-  ON #TempSHAREFOLDERPERMISSION.ResourceID = LASTCHECK.ResourceID AND #TempSHAREFOLDERPERMISSION.[Дата проверки] = LASTCHECK.LastCheckTime
-WHERE [Домен] in (@Domain)
-	AND [Имя компьютера] like @ComputerName
-	AND [Тип разрешения] like @PermissionType
-	AND [Субъект] like @SecurityPrincipal
-	AND [Имя общего ресурса] like '%' + @SharedFolderName + '%';
+  ON #TempSHAREFOLDERPERMISSION.ResourceID = LASTCHECK.ResourceID AND #TempSHAREFOLDERPERMISSION.[Р”Р°С‚Р° РїСЂРѕРІРµСЂРєРё] = LASTCHECK.LastCheckTime
+WHERE [Р”РѕРјРµРЅ] in (@Domain)
+	AND [РРјСЏ РєРѕРјРїСЊСЋС‚РµСЂР°] like @ComputerName
+	AND [РўРёРї СЂР°Р·СЂРµС€РµРЅРёСЏ] like @PermissionType
+	AND [РЎСѓР±СЉРµРєС‚] like @SecurityPrincipal
+	AND [РРјСЏ РѕР±С‰РµРіРѕ СЂРµСЃСѓСЂСЃР°] like '%' + @SharedFolderName + '%';
 
 DROP TABLE #TempSHAREFOLDERPERMISSION

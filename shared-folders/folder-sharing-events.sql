@@ -4,29 +4,29 @@ BEGIN
 END
 
 SELECT v_GS_CM_FOLDERSHARINGEVENTS.ResourceID
-  ,Netbios_Name0 + '.' + Lower(Full_Domain_Name0) AS [Имя компьютера]
+  ,Netbios_Name0 + '.' + Lower(Full_Domain_Name0) AS [РРјСЏ РєРѕРјРїСЊСЋС‚РµСЂР°]
   ,Operating_System_Name_and0
-  ,Resource_Domain_OR_Workgr0 AS [Домен]
-  ,AccountDomain0 + '\' + AccountName0 [Кем изменено]
-  ,InstanceID0 AS [ID События]
+  ,Resource_Domain_OR_Workgr0 AS [Р”РѕРјРµРЅ]
+  ,AccountDomain0 + '\' + AccountName0 [РљРµРј РёР·РјРµРЅРµРЅРѕ]
+  ,InstanceID0 AS [ID РЎРѕР±С‹С‚РёСЏ]
   ,CASE Message0
-	WHEN 'A network share object was modified. ' THEN N'Изменение'
-	WHEN 'A network share object was deleted. ' THEN N'Удаление'
-	WHEN 'A network share object was added. ' THEN N'Создание'
-	WHEN N'Объект сетевой папки изменен. ' THEN N'Изменение'
-	WHEN N'Объект сетевой папки удален. ' THEN N'Удаление'
-	WHEN N'Объект сетевой папки добавлен. ' THEN N'Создание'
+	WHEN 'A network share object was modified. ' THEN N'РР·РјРµРЅРµРЅРёРµ'
+	WHEN 'A network share object was deleted. ' THEN N'РЈРґР°Р»РµРЅРёРµ'
+	WHEN 'A network share object was added. ' THEN N'РЎРѕР·РґР°РЅРёРµ'
+	WHEN N'РћР±СЉРµРєС‚ СЃРµС‚РµРІРѕР№ РїР°РїРєРё РёР·РјРµРЅРµРЅ. ' THEN N'РР·РјРµРЅРµРЅРёРµ'
+	WHEN N'РћР±СЉРµРєС‚ СЃРµС‚РµРІРѕР№ РїР°РїРєРё СѓРґР°Р»РµРЅ. ' THEN N'РЈРґР°Р»РµРЅРёРµ'
+	WHEN N'РћР±СЉРµРєС‚ СЃРµС‚РµРІРѕР№ РїР°РїРєРё РґРѕР±Р°РІР»РµРЅ. ' THEN N'РЎРѕР·РґР°РЅРёРµ'
 	ELSE Message0
-	END AS [Событие]
+	END AS [РЎРѕР±С‹С‚РёРµ]
   ,NewSD0
   ,OldSD0
-  ,SUBSTRING ( ShareName0 ,5 ,200) AS [Имя общей папки]
-  ,v_GS_SHARE.Description0 AS [Примечание]
-  ,SharePath0 AS [Путь общей папки]
+  ,SUBSTRING ( ShareName0 ,5 ,200) AS [РРјСЏ РѕР±С‰РµР№ РїР°РїРєРё]
+  ,v_GS_SHARE.Description0 AS [РџСЂРёРјРµС‡Р°РЅРёРµ]
+  ,SharePath0 AS [РџСѓС‚СЊ РѕР±С‰РµР№ РїР°РїРєРё]
     ,CASE
 	  WHEN CHARINDEX ('/',TimeGenerated0) = 0 THEN CONVERT(datetime, TimeGenerated0, 105)
 	  ELSE CONVERT(datetime, TimeGenerated0)
-	  END AS [Дата события]
+	  END AS [Р”Р°С‚Р° СЃРѕР±С‹С‚РёСЏ]
 INTO #TempFOLDERSHARINGEVENTS
 FROM v_GS_CM_FOLDERSHARINGEVENTS
 JOIN v_R_System
@@ -37,18 +37,18 @@ LEFT OUTER JOIN v_GS_SHARE
 IF (@Date = '9/9/9999 12:00:00 AM' OR @Date IS NULL)
 	SELECT * 
 	FROM #TempFOLDERSHARINGEVENTS
-	WHERE [Домен] in (@Domain)
-	  AND [Имя компьютера] like @ComputerName
-	  AND [Имя общей папки] like '%' + @SharedFolderName + '%'
-	  AND [Событие] in (@EventType)
+	WHERE [Р”РѕРјРµРЅ] in (@Domain)
+	  AND [РРјСЏ РєРѕРјРїСЊСЋС‚РµСЂР°] like @ComputerName
+	  AND [РРјСЏ РѕР±С‰РµР№ РїР°РїРєРё] like '%' + @SharedFolderName + '%'
+	  AND [РЎРѕР±С‹С‚РёРµ] in (@EventType)
 ELSE 
 	SELECT *
 	FROM #TempFOLDERSHARINGEVENTS
-	WHERE  [Дата события] > @Date
-	  AND [Дата события] < dateadd(DD,1,@Date)
-	  AND [Домен] in (@Domain)
-	  AND [Имя компьютера] like @ComputerName
-	  AND [Имя общей папки] like '%' + @SharedFolderName + '%'
-	  AND [Событие] in (@EventType)
+	WHERE  [Р”Р°С‚Р° СЃРѕР±С‹С‚РёСЏ] > @Date
+	  AND [Р”Р°С‚Р° СЃРѕР±С‹С‚РёСЏ] < dateadd(DD,1,@Date)
+	  AND [Р”РѕРјРµРЅ] in (@Domain)
+	  AND [РРјСЏ РєРѕРјРїСЊСЋС‚РµСЂР°] like @ComputerName
+	  AND [РРјСЏ РѕР±С‰РµР№ РїР°РїРєРё] like '%' + @SharedFolderName + '%'
+	  AND [РЎРѕР±С‹С‚РёРµ] in (@EventType)
 
 DROP TABLE #TempFOLDERSHARINGEVENTS

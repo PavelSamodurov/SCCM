@@ -57,7 +57,7 @@ SELECT
           )
         + (CASE WHEN v_GS_OPERATING_SYSTEM.Caption0 LIKE '%R2%' THEN ' R2' ELSE '' END)
         + (CASE WHEN Build LIKE '10%' THEN ' (' + vSMS_WindowsServicingLocalizedNames.Value + ')' ELSE '' END) AS OS
-  ,REPLACE(REPLACE(v_GS_OPERATING_SYSTEM.Caption0,'Microsoft ',''), N'Ã‡ÈÍÓÒÓÙÚ ','')
+  ,REPLACE(REPLACE(v_GS_OPERATING_SYSTEM.Caption0,'Microsoft ',''), N'–ú–∞–π–∫—Ä–æ—Å–æ—Ñ—Ç ','')
       + (CASE WHEN Build LIKE '10%' THEN ' (' + vSMS_WindowsServicingLocalizedNames.Value + ')' ELSE '' END)
       +  ' ' + (CASE v_GS_SYSTEM.SystemType0	WHEN 'X64-based PC' THEN 'x64' ELSE 'x86'END) AS OSVer
   ,Operating_System_Name_and0

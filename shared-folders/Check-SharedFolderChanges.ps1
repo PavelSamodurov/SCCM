@@ -19,9 +19,9 @@ function Send-EmailAnonymously {
         $Body
     )
 
-    $PWord = ConvertTo-SecureString –String "anonymous" –AsPlainText -Force
+    $PWord = ConvertTo-SecureString вЂ“String "anonymous" вЂ“AsPlainText -Force
 
-    $Creds = New-Object –TypeName System.Management.Automation.PSCredential –ArgumentList $User, $PWord
+    $Creds = New-Object вЂ“TypeName System.Management.Automation.PSCredential вЂ“ArgumentList $User, $PWord
 
     Send-MailMessage -From $From -To $To -Subject $Subject -Body $Body -BodyAsHtml -SmtpServer $SMTPServer -Credential $Creds -Encoding utf8
   
@@ -58,10 +58,10 @@ SELECT
   ,SharedFolderName0
   ,PermissionType0
   ,CASE SecurityPrincipal0
-	WHEN N'BUILTIN\Пользователи' THEN  'BUILTIN\Users'
-	WHEN N'BUILTIN\Администраторы' THEN  'BUILTIN\Administrators'
-	WHEN N'NT AUTHORITY\СИСТЕМА' THEN  'NT AUTHORITY\SYSTEM'
-	WHEN N'Все' THEN  'Everyone'
+	WHEN N'BUILTIN\РџРѕР»СЊР·РѕРІР°С‚РµР»Рё' THEN  'BUILTIN\Users'
+	WHEN N'BUILTIN\РђРґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂС‹' THEN  'BUILTIN\Administrators'
+	WHEN N'NT AUTHORITY\РЎРРЎРўР•РњРђ' THEN  'NT AUTHORITY\SYSTEM'
+	WHEN N'Р’СЃРµ' THEN  'Everyone'
 	ELSE SecurityPrincipal0
   END AS SecurityPrincipal0
   ,AccessControlType0
@@ -211,9 +211,9 @@ FROM(
 		WHEN 'A network share object was modified. ' THEN N'Modify'
 		WHEN 'A network share object was deleted. ' THEN N'Delete'
 		WHEN 'A network share object was added. ' THEN N'Add'
-		WHEN N'Объект сетевой папки изменен. ' THEN N'Modify'
-		WHEN N'Объект сетевой папки удален. ' THEN N'Delete'
-		WHEN N'Объект сетевой папки добавлен. ' THEN N'Add'
+		WHEN N'РћР±СЉРµРєС‚ СЃРµС‚РµРІРѕР№ РїР°РїРєРё РёР·РјРµРЅРµРЅ. ' THEN N'Modify'
+		WHEN N'РћР±СЉРµРєС‚ СЃРµС‚РµРІРѕР№ РїР°РїРєРё СѓРґР°Р»РµРЅ. ' THEN N'Delete'
+		WHEN N'РћР±СЉРµРєС‚ СЃРµС‚РµРІРѕР№ РїР°РїРєРё РґРѕР±Р°РІР»РµРЅ. ' THEN N'Add'
 		ELSE Message0
 	  END AS EventType
 	FROM v_GS_CM_FOLDERSHARINGEVENTS
